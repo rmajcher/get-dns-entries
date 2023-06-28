@@ -38,6 +38,10 @@ hosted_zones_and_accounts = {
     'preprd.pluto.tv': {
         'zone_id': 'Z02607252F64PMO2S8NY',
         'account_id': 474014820769
+    },
+    'nonprd.pluto.tv': {
+        'zone_id': 'Z4AU3GYJBQVVQ',
+        'account_id': 479133078108
     }
 }
 
