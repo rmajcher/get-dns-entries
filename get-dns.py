@@ -86,6 +86,11 @@ def main():
                 StartRecordName = args.record,
                 MaxItems = args.numberofentries
             )['ResourceRecordSets']
+        for i in range(0, len(response)):
+            # Replace html encoded name with proper * wildcard character
+            if "\\052." in response[i]['AliasTarget']['DNSName']:
+                response[i]['AliasTarget']['DNSName'] = (f"*.{response[i]['AliasTarget']['DNSName'].split('.', 1)[1]}")
+
         # Print json response for record + number of entries
         pretty_json = json.dumps(response, indent=4)
         print(pretty_json)
@@ -102,6 +107,9 @@ def main():
             if f"{args.record}." == response[i]['Name']:
                 if response[i]['Type'] in ['A', 'CNAME']:
                     rhm.append(response[i])
+                    # Replace html encoded name with proper * wildcard character
+                    if "\\052." in response[i]['AliasTarget']['DNSName']:
+                        response[i]['AliasTarget']['DNSName'] = (f"*.{response[i]['AliasTarget']['DNSName'].split('.', 1)[1]}")
         pretty_json = json.dumps(rhm, indent=4)
         print(pretty_json)
 
