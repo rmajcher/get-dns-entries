@@ -14,7 +14,8 @@ parser.add_argument('-n', '--numberofentries', required = False,
     help = 'Specify number of entries to return default: 1', default = '1')
 parser.add_argument('-rt', '--recordtype', required = False,
     help = 'Specify record type SOA|A|TXT|NS|CNAME|MX|NAPTR|PTR|SRV|SPF|AAAA|CAA|DS')
-
+parser.add_argument('-a', '--activeweightonly', required = False,
+    help = 'Only get active weights for records default: false', default = 'false')
 args = parser.parse_args()
 
 # domains to zone ID & account ID
@@ -69,8 +70,9 @@ def main():
         domain = args.record.split(".", 1)[1]
     route53_client = assumerole(hosted_zones_and_accounts[domain]['account_id'])
 
-    # If number of entries is specified
+    # If number of entries argument is specified
     if args.numberofentries != '1':
+        rhm = []
         # If specified a specific starting record type example: CNAME
         if args.recordtype:
             response = route53_client.list_resource_record_sets(
@@ -86,15 +88,29 @@ def main():
                 StartRecordName = args.record,
                 MaxItems = args.numberofentries
             )['ResourceRecordSets']
+
         for i in range(0, len(response)):
-            # Replace html encoded name with proper * wildcard character
-            if "\\052." in response[i]['AliasTarget']['DNSName']:
-                response[i]['AliasTarget']['DNSName'] = (f"*.{response[i]['AliasTarget']['DNSName'].split('.', 1)[1]}")
+            try:
+                # Replace html encoded name with proper * wildcard character
+                if "\\052." in response[i]['AliasTarget']['DNSName']:
+                    response[i]['AliasTarget']['DNSName'] = (f"*.{response[i]['AliasTarget']['DNSName'].split('.', 1)[1]}")
+            except:
+                wildcard = 0
+            try:
+                # Only get active weight record and ommit 0 weights
+                if 'true' in args.activeweightonly:
+                    if response[i]['Weight'] > 0:
+                        rhm.append(response[i])
+                else:
+                    rhm.append(response[i])
+            except:
+                weighted_record = 0
+                rhm.append(response[i])
 
         # Print json response for record + number of entries
-        pretty_json = json.dumps(response, indent=4)
+        pretty_json = json.dumps(rhm, indent=4)
         print(pretty_json)
-    # Will specifically find the correct entries and put them in a json variable
+    # Will automatically find the correct entries and put them in the json variable rhm
     else:
         rhm = []
         response = route53_client.list_resource_record_sets(
@@ -106,10 +122,24 @@ def main():
         for i in range(0, len(response)):
             if f"{args.record}." == response[i]['Name']:
                 if response[i]['Type'] in ['A', 'CNAME']:
-                    rhm.append(response[i])
-                    # Replace html encoded name with proper * wildcard character
-                    if "\\052." in response[i]['AliasTarget']['DNSName']:
-                        response[i]['AliasTarget']['DNSName'] = (f"*.{response[i]['AliasTarget']['DNSName'].split('.', 1)[1]}")
+                    try:
+                        # Replace html encoded name with proper * wildcard character
+                        if "\\052." in response[i]['AliasTarget']['DNSName']:
+                            response[i]['AliasTarget']['DNSName'] = (f"*.{response[i]['AliasTarget']['DNSName'].split('.', 1)[1]}")
+                    except:
+                        wildcard = 0
+                    try:
+                        # Only get active weight record and ommit 0 weights
+                        if 'true' in args.activeweightonly:
+                            if response[i]['Weight'] > 0:
+                                rhm.append(response[i])
+                        else:
+                            rhm.append(response[i])
+                    except:
+                        weighted_record = 0
+                        rhm.append(response[i])
+
+        # Print json response for record
         pretty_json = json.dumps(rhm, indent=4)
         print(pretty_json)
 
