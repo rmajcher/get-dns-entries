@@ -121,7 +121,7 @@ def main():
 
         for i in range(0, len(response)):
             if f"{args.record}." == response[i]['Name']:
-                if response[i]['Type'] in ['A', 'CNAME']:
+                if response[i]['Type'] in ['A', 'AAAA', 'CNAME']:
                     try:
                         # Replace html encoded name with proper * wildcard character
                         if "\\052." in response[i]['AliasTarget']['DNSName']:
