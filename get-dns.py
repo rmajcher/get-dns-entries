@@ -36,8 +36,16 @@ hosted_zones_and_accounts = {
         'zone_id': 'Z37ZMHN4RVDCQA',
         'account_id': 322304022098
     },
+    'live.prd.pluto.tv': {
+        'zone_id': 'Z02338143RMSJB9SIO0B6',
+        'account_id': 322304022098
+    },
     'preprd.pluto.tv': {
         'zone_id': 'Z02607252F64PMO2S8NY',
+        'account_id': 474014820769
+    },
+    'live.preprd.pluto.tv': {
+        'zone_id': 'Z07755352NPR8HSHU31O5',
         'account_id': 474014820769
     },
     'nonprd.pluto.tv': {
