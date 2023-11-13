@@ -24,9 +24,17 @@ hosted_zones_and_accounts = {
         'zone_id': 'Z2Z8T9W8E08V8N',
         'account_id': 157385605725
     },
+    'corp.pluto.tv': {
+        'zone_id': 'Z1443TF62ZX7PA',
+        'account_id': 157385605725
+    },
     'clusters.pluto.tv': {
         'zone_id': 'Z1ZF3WMUCEYZF2',
         'account_id': 853581745927
+    },
+    'plutopreprod.tv': {
+        'zone_id': 'Z6HWH9U3GR6BW',
+        'account_id': 290745908312
     },
     'plutopreprod.tv': {
         'zone_id': 'Z6HWH9U3GR6BW',
@@ -74,6 +82,9 @@ def main():
     if args.record in list(hosted_zones_and_accounts.keys()):
         domain = args.record
     # All other records besides root records
+    elif 'www' in args.record:
+        record_www_strip = args.record.strip('www')
+        domain = record_www_strip.split(".", 1)[1]
     else:
         domain = args.record.split(".", 1)[1]
     route53_client = assumerole(hosted_zones_and_accounts[domain]['account_id'])
