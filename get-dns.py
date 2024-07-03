@@ -24,8 +24,16 @@ hosted_zones_and_accounts = {
         'zone_id': 'Z2Z8T9W8E08V8N',
         'account_id': 157385605725
     },
+    'prod.pluto.tv': {
+        'zone_id': 'Z192GT3YXK1OGW',
+        'account_id': 157385605725
+    },
     'corp.pluto.tv': {
         'zone_id': 'Z1443TF62ZX7PA',
+        'account_id': 157385605725
+    },
+    'ops.pluto.tv': {
+        'zone_id': 'Z27PRFSD076P19',
         'account_id': 157385605725
     },
     'clusters.pluto.tv': {
@@ -36,9 +44,9 @@ hosted_zones_and_accounts = {
         'zone_id': 'Z6HWH9U3GR6BW',
         'account_id': 290745908312
     },
-    'plutopreprod.tv': {
-        'zone_id': 'Z6HWH9U3GR6BW',
-        'account_id': 290745908312
+    'plutostaging.tv': {
+        'zone_id': 'Z22OLMJXGIEJMJ',
+        'account_id': 323392261460
     },
     'prd.pluto.tv': {
         'zone_id': 'Z37ZMHN4RVDCQA',
@@ -58,6 +66,10 @@ hosted_zones_and_accounts = {
     },
     'nonprd.pluto.tv': {
         'zone_id': 'Z4AU3GYJBQVVQ',
+        'account_id': 479133078108
+    },
+    'live.nonprd.pluto.tv': {
+        'zone_id': 'Z01352673HGZFGWS8Q63R',
         'account_id': 479133078108
     }
 }
